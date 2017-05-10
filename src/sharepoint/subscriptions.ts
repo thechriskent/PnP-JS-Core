@@ -18,6 +18,7 @@ export class Subscriptions extends QueryableCollection {
     /**
      * Returns all the webhook subscriptions or the specified webhook subscription
      *
+     * @param subscriptionId The id of a specific webhook subscription to retrieve, omit to retrieve all the webhook subscriptions
      */
     public getById(subscriptionId: string): Subscription {
         const subscription = new Subscription(this);
@@ -28,6 +29,9 @@ export class Subscriptions extends QueryableCollection {
     /**
      * Create a new webhook subscription
      *
+     * @param notificationUrl The url to receive the notifications
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
+     * @param clientState A client specific string (defaults to pnp-js-core-subscription when omitted)
      */
     public add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<SubscriptionAddResult> {
 
@@ -52,8 +56,9 @@ export class Subscriptions extends QueryableCollection {
 export class Subscription extends QueryableInstance {
 
     /**
-     * Update a webhook subscription
+     * Renews this webhook subscription
      *
+     * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
      */
     public update(expirationDate: string): Promise<SubscriptionUpdateResult> {
 
@@ -67,7 +72,7 @@ export class Subscription extends QueryableInstance {
     }
 
     /**
-     * Remove a webhook subscription
+     * Removes this webhook subscription
      *
      */
     public delete(): Promise<void> {
