@@ -12,9 +12,9 @@ import { Features } from "./features";
 export class Site extends QueryableInstance {
 
     /**
-     * Creates a new instance of the RoleAssignments class
+     * Creates a new instance of the Site class
      *
-     * @param baseUrl The url or Queryable which forms the parent of this fields collection
+     * @param baseUrl The url or Queryable which forms the parent of this site collection
      */
     constructor(baseUrl: string | Queryable, path = "_api/site") {
         super(baseUrl, path);
@@ -29,7 +29,7 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Gets the active features for this site
+     * Gets the active features for this site collection
      *
      */
     public get features(): Features {
@@ -37,7 +37,7 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Get all custom actions on a site collection
+     * Gets all custom actions for this site collection
      *
      */
     public get userCustomActions(): UserCustomActions {
@@ -45,7 +45,7 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Gets the context information for the site.
+     * Gets the context information for the site collection
      */
     public getContextInfo(): Promise<ContextInfo> {
         const q = new Site(this.parentUrl, "_api/contextinfo");
@@ -78,7 +78,7 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Gets the site URL from a page URL.
+     * Gets the site url from a page url
      *
      * @param absolutePageUrl The absolute url of the page
      */
@@ -95,7 +95,7 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Creates a new batch for requests within the context of context this site
+     * Creates a new batch for requests within the context of this site collection
      *
      */
     public createBatch(): ODataBatch {
@@ -103,9 +103,9 @@ export class Site extends QueryableInstance {
     }
 
     /**
-     * Opens a web by Id (using POST)
+     * Opens a web by id (using POST)
      *
-     * @param webId The GUID id fo the web to open
+     * @param webId The GUID id of the web to open
      */
     public openWebById(webId: string): Promise<OpenWebByIdResult> {
 
@@ -120,7 +120,7 @@ export class Site extends QueryableInstance {
 }
 
 /**
- * The result of opening a web by id, contains the data retruned as well as a chainable web instance
+ * The result of opening a web by id: contains the data returned as well as a chainable web instance
  */
 export interface OpenWebByIdResult {
     data: any;
