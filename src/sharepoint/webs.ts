@@ -19,7 +19,17 @@ import { deprecated } from "../utils/decorators";
 import { QueryableShareableWeb } from "./queryableshareable";
 import { RelatedItemManger, RelatedItemManagerImpl } from "./relateditems";
 
+/**
+ * Describes a collection of webs
+ *
+ */
 export class Webs extends QueryableCollection {
+    
+    /**
+     * Creates a new instance of the Webs class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this web collection
+     */
     constructor(baseUrl: string | Queryable, webPath = "webs") {
         super(baseUrl, webPath);
     }
@@ -29,10 +39,10 @@ export class Webs extends QueryableCollection {
      *
      * @param title The new web's title
      * @param url The new web's relative url
-     * @param description The web web's description
-     * @param template The web's template
-     * @param language The language code to use for this web
-     * @param inheritPermissions If true permissions will be inherited from the partent web
+     * @param description The new web's description
+     * @param template The new web's template internal name (default = STS)
+     * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
+     * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
      * @param additionalSettings Will be passed as part of the web creation body
      */
     public add(
@@ -69,7 +79,17 @@ export class Webs extends QueryableCollection {
     }
 }
 
+/**
+ * Describes a collection of web infos
+ *
+ */
 export class WebInfos extends QueryableCollection {
+    
+    /**
+     * Creates a new instance of the WebInfos class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this web infos collection
+     */
     constructor(baseUrl: string | Queryable, webPath = "webinfos") {
         super(baseUrl, webPath);
     }
@@ -103,20 +123,33 @@ export class Web extends QueryableShareableWeb {
         return new Web(url, path);
     }
 
+    /**
+     * Creates a new instance of the Web class
+     *
+     * @param baseUrl The url or Queryable which forms the parent of this web
+     */
     constructor(baseUrl: string | Queryable, path = "_api/web") {
         super(baseUrl, path);
     }
 
+    /**
+     * Gets this web's subwebs
+     *
+     */
     public get webs(): Webs {
         return new Webs(this);
     }
 
+    /**
+     * Gets a collection of WebInfos for this web's subwebs
+     *
+     */
     public get webinfos(): WebInfos {
         return new WebInfos(this);
     }
 
     /**
-     * Get the content types available in this web
+     * Gets the content types available in this web
      *
      */
     public get contentTypes(): ContentTypes {
@@ -124,7 +157,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Get the lists in this web
+     * Gets the lists in this web
      *
      */
     public get lists(): Lists {
@@ -156,7 +189,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Get the navigation options in this web
+     * Gets the navigation options in this web
      *
      */
     public get navigation(): Navigation {
@@ -187,7 +220,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Get the folders in this web
+     * Gets the top-level folders in this web
      *
      */
     public get folders(): Folders {
@@ -195,7 +228,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Get all custom actions on a site
+     * Gets all user custom actions for this web
      *
      */
     public get userCustomActions(): UserCustomActions {
@@ -203,7 +236,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Gets the collection of RoleDefinition resources.
+     * Gets the collection of RoleDefinition resources
      *
      */
     public get roleDefinitions(): RoleDefinitions {
@@ -219,7 +252,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Creates a new batch for requests within the context of context this web
+     * Creates a new batch for requests within the context of this web
      *
      */
     public createBatch(): ODataBatch {
@@ -227,53 +260,66 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * The root folder of the web
+     * Gets the root folder of the web
+     *
      */
     public get rootFolder(): Folder {
         return new Folder(this, "rootFolder");
     }
 
+    /**
+     * Gets the associated owner group for this web
+     *
+     */
     public get associatedOwnerGroup(): SiteGroup {
         return new SiteGroup(this, "associatedownergroup");
     }
 
+    /**
+     * Gets the associated member group for this web
+     *
+     */
     public get associatedMemberGroup(): SiteGroup {
         return new SiteGroup(this, "associatedmembergroup");
     }
 
+    /**
+     * Gets the associated visitor group for this web
+     *
+     */
     public get associatedVisitorGroup(): SiteGroup {
         return new SiteGroup(this, "associatedvisitorgroup");
     }
 
     /**
-     * Get a folder by server relative url
+     * Gets a folder by server relative url
      *
-     * @param folderRelativeUrl the server relative path to the folder (including /sites/ if applicable)
+     * @param folderRelativeUrl The server relative path to the folder (including /sites/ if applicable)
      */
     public getFolderByServerRelativeUrl(folderRelativeUrl: string): Folder {
         return new Folder(this, `getFolderByServerRelativeUrl('${folderRelativeUrl}')`);
     }
 
     /**
-     * Get a file by server relative url
+     * Gets a file by server relative url
      *
-     * @param fileRelativeUrl the server relative path to the file (including /sites/ if applicable)
+     * @param fileRelativeUrl The server relative path to the file (including /sites/ if applicable)
      */
     public getFileByServerRelativeUrl(fileRelativeUrl: string): File {
         return new File(this, `getFileByServerRelativeUrl('${fileRelativeUrl}')`);
     }
 
     /**
-     * Get a list by server relative url (list's root folder)
+     * Gets a list by server relative url (list's root folder)
      *
-     * @param listRelativeUrl the server relative path to the list's root folder (including /sites/ if applicable)
+     * @param listRelativeUrl The server relative path to the list's root folder (including /sites/ if applicable)
      */
     public getList(listRelativeUrl: string): List {
         return new List(this, `getList('${listRelativeUrl}')`);
     }
 
     /**
-     * Updates this web intance with the supplied properties
+     * Updates this web instance with the supplied properties
      *
      * @param properties A plain object hash of values to update for the web
      */
@@ -297,7 +343,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Delete this web
+     * Deletes this web
      *
      */
     public delete(): Promise<void> {
@@ -305,12 +351,12 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Applies the theme specified by the contents of each of the files specified in the arguments to the site.
+     * Applies the theme specified by the contents of each of the files specified in the arguments to the site
      *
-     * @param colorPaletteUrl Server-relative URL of the color palette file.
-     * @param fontSchemeUrl Server-relative URL of the font scheme.
-     * @param backgroundImageUrl Server-relative URL of the background image.
-     * @param shareGenerated true to store the generated theme files in the root site, or false to store them in this site.
+     * @param colorPaletteUrl The server-relative URL of the color palette file
+     * @param fontSchemeUrl The server-relative URL of the font scheme
+     * @param backgroundImageUrl The server-relative URL of the background image
+     * @param shareGenerated When true, the generated theme files are stored in the root site. When false, they are stored in this web
      */
     public applyTheme(colorPaletteUrl: string, fontSchemeUrl: string, backgroundImageUrl: string, shareGenerated: boolean): Promise<void> {
 
@@ -325,7 +371,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Applies the specified site definition or site template to the Web site that has no template applied to it.
+     * Applies the specified site definition or site template to the Web site that has no template applied to it
      *
      * @param template Name of the site definition or the name of the site template
      */
@@ -338,9 +384,9 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Returns whether the current user has the given set of permissions.
+     * Returns whether the current user has the given set of permissions
      *
-     * @param perms The high and low permission range.
+     * @param perms The high and low permission range
      */
     @deprecated("This method will be removed in future releases. Please use the methods found in queryable securable.")
     public doesUserHavePermissions(perms: BasePermissions): Promise<boolean> {
@@ -352,7 +398,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Checks whether the specified login name belongs to a valid user in the site. If the user doesn't exist, adds the user to the site.
+     * Checks whether the specified login name belongs to a valid user in the web. If the user doesn't exist, adds the user to the web.
      *
      * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
      */
@@ -370,17 +416,17 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Returns a collection of site templates available for the site.
+     * Returns a collection of site templates available for the site
      *
-     * @param language The LCID of the site templates to get.
-     * @param true to include language-neutral site templates; otherwise false
+     * @param language The locale id of the site templates to retrieve (default = 1033 [English, US])
+     * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
      */
     public availableWebTemplates(language = 1033, includeCrossLanugage = true): QueryableCollection {
         return new QueryableCollection(this, `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`);
     }
 
     /**
-     * Returns the list gallery on the site.
+     * Returns the list gallery on the site
      *
      * @param type The gallery type - WebTemplateCatalog = 111, WebPartCatalog = 113 ListTemplateCatalog = 114,
      * MasterPageCatalog = 116, SolutionCatalog = 121, ThemeCatalog = 123, DesignCatalog = 124, AppDataCatalog = 125
@@ -392,7 +438,9 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query.
+     * Returns the collection of changes from the change log that have occurred within the list, based on the specified query
+     *
+     * @param query The change query
      */
     public getChanges(query: ChangeQuery): Promise<any> {
 
@@ -401,7 +449,7 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Gets the custom list templates for the site.
+     * Gets the custom list templates for the site
      *
      */
     public get customListTemplate(): QueryableCollection {
@@ -409,19 +457,19 @@ export class Web extends QueryableShareableWeb {
     }
 
     /**
-     * Returns the user corresponding to the specified member identifier for the current site.
+     * Returns the user corresponding to the specified member identifier for the current site
      *
-     * @param id The ID of the user.
+     * @param id The id of the user
      */
     public getUserById(id: number): SiteUser {
         return new SiteUser(this, `getUserById(${id})`);
     }
 
     /**
-     * Returns the name of the image file for the icon that is used to represent the specified file.
+     * Returns the name of the image file for the icon that is used to represent the specified file
      *
-     * @param filename The file name. If this parameter is empty, the server returns an empty string.
-     * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1.
+     * @param filename The file name. If this parameter is empty, the server returns an empty string
+     * @param size The size of the icon: 16x16 pixels = 0, 32x32 pixels = 1 (default = 0)
      * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
      */
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
@@ -429,21 +477,37 @@ export class Web extends QueryableShareableWeb {
     }
 }
 
+/**
+ * Result from adding a web
+ *
+ */
 export interface WebAddResult {
     data: any;
     web: Web;
 }
 
+/**
+ * Result from updating a web
+ *
+ */
 export interface WebUpdateResult {
     data: any;
     web: Web;
 }
 
+/**
+ * Result from retrieving a catalog
+ *
+ */
 export interface GetCatalogResult {
     data: any;
     list: List;
 }
 
+/**
+ * Result from ensuring a user
+ *
+ */
 export interface WebEnsureUserResult {
     data: SiteUserProps;
     user: SiteUser;
